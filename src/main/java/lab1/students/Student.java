@@ -42,8 +42,7 @@ public class Student {
     return new Student(name, gpa, List.of(courses));
   }
 
-
-  public boolean isValid(String name, double gpa, List<String> courses) {
+  public static boolean isValid(String name, double gpa, List<String> courses) {
     return name != null && name.length() > 0
       && gpa >= 0 && gpa <= 5.0
       && courses != null;
@@ -66,7 +65,28 @@ public class Student {
     return courses;
   }
 
-  public Student withName(String name) {
+  // the ESSENCE is that instance methods REQUIRE an instace of the
+  // enclosing class as the prefix
+  // this suggests that they are suitable when you want to work on one instance
+
+  // static methods do not have an object prefix, do not have this,
+  // as such are suitable for behaviors that are RELATED to the concept
+  // the class embodies, but NOT spedific to one instance.
+  void doStuff() {
+    // "this" exists in an instance method
+    // to create it, we MUST have a prefix for the method invocation
+    // e.g. myStudent.doStuff() -- myStudent at the caller becomes "this" in the method
+    // IF you have simply doStuff() (and it works) it must be equivalent to
+    // this.doStuff()
+
+    System.out.println(this);
+  }
+  static void doOtherStuff() {
+//    System.out.println(this); // this DOES NOT exist in a static method
+  }
+  // explicit declaration of "this" is valid since Java 6 !??!
+  // if you have an instance method (i.e. "this" exists)
+  public Student withName(Student this, String name) {
     // IF (but only if) courses is never modified, then we can reuse it!
     // validation? in this case, performed by the constructor
     return new Student(name, this.gpa, this.courses);

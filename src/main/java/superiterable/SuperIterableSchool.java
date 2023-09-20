@@ -72,18 +72,98 @@ public class SuperIterableSchool {
     school.stream()
       .flatMap(s -> s.getCourses().stream())
       .forEach(m -> System.out.println(m));
+
+//Using Stream API and Student list...
+//- print all students
+    System.out.println("-------------------");
+    school.stream().forEach(s -> System.out.println(s));
+
+//- print "Fred takes 2 courses" for all students that take more than one course
+    System.out.println("-------------------");
+    school.stream()
+      .filter(s -> s.getCourses().size() > 1)
+      .map(s -> s.getName() + " takes " + s.getCourses().size() + " courses")
+      .forEach(s -> System.out.println(s));
+
+//- each student that takes more than two courses, gets a 20% bump in grade,
+// then print them all out
+    System.out.println("-------------------");
+    System.out.println("school before:");
+    school.stream().forEach(s -> System.out.println(s));
+
+    System.out.println("with grade bumps:");
+    school.stream()
+      .filter(s -> s.getCourses().size() > 2)
+      .map(s -> s.withGpa(s.getGpa() * 1.2))
+      .forEach(s -> System.out.println(s));
+
+
+    System.out.println("school before:");
+    school.stream().forEach(s -> System.out.println(s));
+
+    System.out.println("-------------------");
+    System.out.println("take 2:");
+    System.out.println("school before:");
+    school.stream().forEach(s -> System.out.println(s));
+
+    System.out.println("with grade bumps:");
+    school.stream()
+//      .map(s -> {
+//        if (s.getCourses().size() > 2) {
+//          return s.withGpa(s.getGpa() * 1.2);
+//        } else {
+//          return s;
+//        }
+//      })
+
+      .map(s -> s.getCourses().size() > 2
+        ? s.withGpa(s.getGpa() * 1.2)
+        : s)
+      .forEach(s -> System.out.println(s));
+
+    System.out.println("school before:");
+    school.stream().forEach(s -> System.out.println(s));
+    System.out.println("-------------------");
+
+//- print all the courses taken by all the students
+    school.stream()
+      .flatMap(s -> s.getCourses().stream())
+      .forEach(s -> System.out.println(s));
+
+    System.out.println("-------------------");
+//- read the API docs for java.stream.Stream...
+//-- print all the courses without duplicates
+    school.stream()
+      .flatMap(s -> s.getCourses().stream())
+      .distinct()
+      .forEach(s -> System.out.println(s));
+
+    System.out.println("-------------------");
+//-- print all courses without duplicates, in order
+    school.stream()
+      .flatMap(s -> s.getCourses().stream())
+      .distinct()
+//      .sorted((s1, s2) -> s2.compareTo(s1))
+      .sorted()
+      .forEach(s -> System.out.println(s));
+
+    System.out.println("-------------------");
+//-------------
+//- print "Fred takes Math" etc. for all student/course pairs
+    school.stream()
+      // before flatMap, we have only four items
+//      .flatMap((Student s) -> {
+//        return s.getCourses().stream().map(c -> s.getName() + " takes " + c);
+//      })
+      .flatMap(s -> s.getCourses().stream().map(c -> s.getName() + " takes " + c))
+      // after flatMap, we've LOST the original data
+      .forEach(s -> System.out.println(s));
   }
 }
 
-/*
-Using Stream API and Student list...
-- print all students
-- print "Fred takes 2 courses" for all students that take more than one course
-- each student that takes more than two courses, gets a 20% bump in grade, then print them all out
-- print all the courses taken by all the students
-- read the API docs for java.stream.Stream...
--- print all the courses without duplicates
--- print all courses without duplicates, in order
--------------
-- print "Fred takes Math" etc. for all student/course pairs
- */
+// fancy mathematical names
+// producing a "final result"
+// example of thread sharding
+// CompletableFuture
+// fundamental problems of concurrency
+// concurrent API solving those problems

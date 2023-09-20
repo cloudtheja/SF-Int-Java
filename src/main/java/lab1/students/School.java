@@ -1,12 +1,23 @@
 package lab1.students;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
-interface CriterionOfStudent {
-  boolean test(Student s);
+//interface CriterionOfStudent {
+//  boolean test(Student s);
+interface Criterion<E> {
+  boolean test(E s);
 }
 
-class SmartStudent implements CriterionOfStudent {
+//interface UseStudent {
+//  void accept(Student s);
+interface Use<E> {
+  void accept(E s);
+}
+
+//class SmartStudent implements CriterionOfStudent {
+class SmartStudent implements Criterion<Student> {
   private double threshold;
 
   public SmartStudent(double threshold) {
@@ -19,7 +30,8 @@ class SmartStudent implements CriterionOfStudent {
   }
 }
 
-class EnthusiasticStudent implements CriterionOfStudent {
+//class EnthusiasticStudent implements CriterionOfStudent {
+class EnthusiasticStudent implements Criterion<Student> {
   @Override
   public boolean test(Student s) {
     return s.getCourses().size() > 2;
@@ -27,15 +39,56 @@ class EnthusiasticStudent implements CriterionOfStudent {
 }
 
 public class School {
-  // OO patterns call this "Command" pattern
-  // functional programming simply calls this (and other things) "Higher Order Function"
-  public static void showByCriterion(List<Student> ls, CriterionOfStudent crit) {
-    for (var s : ls) {
-      if (crit.test(s)) { // NOT crit(s)
-        System.out.println("Interesting! " + s);
+
+  // arguments to a method constrain the CALLER
+  // therefore, accept the MOST general argument type that you can work with
+  // return type constrains the IMPLEMENTATION
+  public static <E> List<E> selectByCriterion(Iterable<E> ls,
+                                              Criterion<E> crit) {
+    List<E> results = new ArrayList<>();
+    for (E s : ls) {
+      if (crit.test(s)) {
+        results.add(s);
       }
     }
+    return results; // or List.copyOf(results); ?? maybe
   }
+
+//  public static List<Student> selectByCriterion(Iterable<Student> ls,
+////                                                CriterionOfStudent crit) {
+//                                                Criterion<Student> crit) {
+//    List<Student> results = new ArrayList<>();
+//    for (Student s : ls) {
+//      if (crit.test(s)) { // NOT crit(s)
+//        results.add(s);
+//      }
+//    }
+//    return results; // or List.copyOf(results); ?? maybe
+//  }
+//
+  public static <E> void withAll(Iterable<E> ls, Use<E> op) {
+    for (E s : ls) {
+      op.accept(s);
+    }
+  }
+
+  // OO patterns call this "Command" pattern
+  // functional programming simply calls this (and other things) "Higher Order Function"
+//  public static void showByCriterion(List<Student> ls, CriterionOfStudent crit) {
+//    for (var s : ls) {
+//      if (crit.test(s)) { // NOT crit(s)
+//        System.out.println("Interesting! " + s);
+//      }
+//    }
+//  }
+
+//  public static void toDBByCriterion(List<Student> ls, CriterionOfStudent crit, Connection con) {
+//    for (var s : ls) {
+//      if (crit.test(s)) { // NOT crit(s)
+//        con.writetodatabase(s);
+//      }
+//    }
+//  }
 
 //  private static double threshold = 3.0;
 //  public static void setThreshold(double threshold) {
@@ -70,6 +123,7 @@ public class School {
 //    showSmart(school, 3.0);
 //    showSmart(school);
 
+/*
     CriterionOfStudent smarterThanThree = new SmartStudent(3.0);
     showByCriterion(school, smarterThanThree);
     System.out.println("------------");
@@ -79,6 +133,7 @@ public class School {
 //    showEnthusiastic(school);
     showByCriterion(school, new EnthusiasticStudent());
     System.out.println("------------");
+*/
 
     // we KNOW (and so does the compiler) this second argument MUST BE
     // CriterionOfStudent
@@ -89,9 +144,30 @@ public class School {
     // we could (conceivably) define the method, and have the compiler
     // a) build a (hidden) class around that method
     // b) instantiate it
-    showByCriterion(school,
-      (Student s) -> { return s.getCourses().size() <= 2; }
-    );
+//    showByCriterion(school,
+////      (Student s) -> { return s.getCourses().size() <= 2; }
+////      (@Deprecated var s) -> { return s.getCourses().size() <= 2; }
+////      s -> { return s.getCourses().size() <= 2; }
+//      s -> s.getCourses().size() <= 2
+//    );
 
+    withAll(
+      selectByCriterion(school, s -> s.getGpa() > 3),
+      s -> System.out.println("Smart: " + s));
+
+    withAll(
+      selectByCriterion(school, s -> s.getCourses().size() < 3),
+      s -> System.out.println("Unenthusiastic: " + s));
+
+//    CriterionOfStudent unenthusiastic = s -> s.getCourses().size() <= 2;
+//    showByCriterion(school, unenthusiastic);
+
+//    Class<?> cl = unenthusiastic.getClass();
+    // unenthusiastic. whole bunch of methods!!!
+
+    Set<String> words = Set.of("hello", "goodbye", "the", "aardvark", "murmur");
+    withAll(
+      selectByCriterion(words, w -> w.length() > 5),
+      w -> System.out.println("longish word: " + w));
   }
 }

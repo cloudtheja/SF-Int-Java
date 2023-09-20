@@ -31,7 +31,7 @@ public class SuperIterable<E> implements Iterable<E> {
   }
 
   public SuperIterable<E> filter(/*SuperIterable<E> this,*/
-                                   Predicate<E> crit) {
+    Predicate<E> crit) {
     List<E> results = new ArrayList<>();
     for (E s : this.self) {
       if (crit.test(s)) {
@@ -50,9 +50,20 @@ public class SuperIterable<E> implements Iterable<E> {
 //      System.out.println("result is " + f);
       res.add(f);
     }
-
 //      self.forEach(e -> res.add(op.apply(e)));
 
+    return new SuperIterable<>(res);
+  }
+
+  public <F> SuperIterable<F> flatMap(Function<E, SuperIterable<F>> op) {
+    List<F> res = new ArrayList<>();
+
+    for (E e : self) {
+      SuperIterable<F> manyf = op.apply(e);
+      for (F f : manyf) {
+        res.add(f);
+      }
+    }
     return new SuperIterable<>(res);
   }
 

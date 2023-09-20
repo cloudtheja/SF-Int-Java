@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 // Predicate is core library, and looks like this:
@@ -38,6 +39,21 @@ public class SuperIterable<E> implements Iterable<E> {
       }
     }
     return new SuperIterable<>(results);
+  }
+
+  public <F> SuperIterable<F> map(Function<E, F> op) {
+    List<F> res = new ArrayList<>();
+
+    for (E e : self) {
+//      System.out.println("applying function to " + e);
+      F f = op.apply(e);
+//      System.out.println("result is " + f);
+      res.add(f);
+    }
+
+//      self.forEach(e -> res.add(op.apply(e)));
+
+    return new SuperIterable<>(res);
   }
 
   // equivalent to "forEach"

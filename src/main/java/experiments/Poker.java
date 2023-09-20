@@ -1,4 +1,4 @@
-package lab1.students.experiments;
+package experiments;
 
 enum Days {
   MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY;

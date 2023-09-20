@@ -99,6 +99,19 @@ public class Student {
   public Student withCourses(List<String> courses) {
     return new Student(this.name, this.gpa, courses);
   }
+
+  @Override
+  public String toString() {
+    return "Student{" +
+      "name='" + name + '\'' +
+      ", gpa=" + gpa +
+      ", courses=" + courses +
+      '}';
+  }
+// Not immutable!!
+//  public void setName(String name) {
+//    this.name = name;
+//  }
 }
 
 
@@ -116,5 +129,7 @@ class TryItOut {
 //    s.gpa = -22;
 //    System.out.println(s.name);
 //    System.out.println(s.gpa);
+
+//    Student fredAtStartOfSemester =
   }
 }

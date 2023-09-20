@@ -1,8 +1,5 @@
-package lab1.students.experiments;
+package experiments;
 
-import com.sun.source.tree.Tree;
-
-import java.time.LocalDate;
 import java.util.*;
 //import java.lang.StringBuilder;
 

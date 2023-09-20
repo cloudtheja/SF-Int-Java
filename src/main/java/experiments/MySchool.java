@@ -1,4 +1,4 @@
-package lab1.students.experiments;
+package experiments;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package lab1.students.experiments;
+package experiments;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

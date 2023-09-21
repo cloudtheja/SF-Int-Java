@@ -161,7 +161,4 @@ public class SuperIterableSchool {
   }
 }
 
-// fancy name!!!
-// producing a "final result"
-// example of thread sharding
 // new features

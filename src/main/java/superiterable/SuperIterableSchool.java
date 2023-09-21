@@ -161,10 +161,7 @@ public class SuperIterableSchool {
   }
 }
 
-// fancy mathematical names
+// fancy name!!!
 // producing a "final result"
 // example of thread sharding
-// CompletableFuture
-// fundamental problems of concurrency
-// concurrent API solving those problems
 // new features

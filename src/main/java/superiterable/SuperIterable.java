@@ -41,6 +41,8 @@ public class SuperIterable<E> implements Iterable<E> {
     return new SuperIterable<>(results);
   }
 
+  // Something with a map method of this kind
+  // this is called a Functor
   public <F> SuperIterable<F> map(Function<E, F> op) {
     List<F> res = new ArrayList<>();
 
@@ -55,6 +57,8 @@ public class SuperIterable<E> implements Iterable<E> {
     return new SuperIterable<>(res);
   }
 
+  // if you have one of these...
+  // this is called a Monad
   public <F> SuperIterable<F> flatMap(Function<E, SuperIterable<F>> op) {
     List<F> res = new ArrayList<>();
 
